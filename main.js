@@ -4,6 +4,7 @@
 var members = [];
 var lists = [];
 
+
 var boardTab = document.querySelector('.board-tab');
 var membersTab = document.querySelector('.members-tab');
 var boardView = document.querySelector('#board-view');
@@ -177,7 +178,7 @@ function createBoard(lists) {
     for (task of list.tasks) {
       listsHtml += '<div class= "body-list-card">\
                                    <p>' + task.content + '</p>\
-                                   <button class="btn btn-info btn-sm edit-card-button" data-id="' + task.id + '">Edit</button>\
+                                   <button class="btn btn-info btn-sm edit-card-button" data-id="' + task.id + '" data-list="' + list.id + '" >Edit</button>\
                                    <ul class="card-members">';
 
 
@@ -242,7 +243,9 @@ function createBoard(lists) {
   for (var i = 0; i < editCardButtons.length; i++) {
     var editCardButton = editCardButtons[i];
     editCardButton.addEventListener('click', function () {
-      editCard(this.dataset.id);
+      console.log(this.dataset.list);
+      editCard(this.dataset.id, this.dataset.list);
+
 
     });
   }
@@ -268,7 +271,7 @@ function createBoard(lists) {
     var listNameInput = listsNameInput[i];
     listNameInput.addEventListener("blur", function () {
       closeInputTitleList(this.dataset.id);
-      changeNameShow(this.dataset.id);
+      
     });
   }
 
@@ -296,14 +299,11 @@ function openInputTitleList(id) {
   listNameInput.focus();
 
 }
+ 
 
 
-function changeNameShow(id) {
 
-
-}
-
-function editCard(cardId) {
+function editCard(cardId, listId) {
 
 
   //open modal window
@@ -316,6 +316,9 @@ function editCard(cardId) {
   //Set id of card to the save button
 
   modalElement.dataset.id = cardId;
+  modalElement.dataset.list = listId;
+  //modalElement.datalistset.id = 
+  document.querySelector('.lists-holder').innerHTML = getTitleListForModal();
 
   document.querySelector('.member-list').innerHTML = getMembersListForModal(card.members);
 
@@ -370,11 +373,12 @@ function saveModalChanges() {
     content: document.querySelector('#card-text').value,
     members: getChekedMembersFromModal()
   }
-
+  changeListInModal(cardId);
   updateCard(cardId, cardData);
 
   createBoard(lists);
   closeEditModal();
+ 
 }
 
 
@@ -399,7 +403,48 @@ function deleteEditModal() {
 }
 
 
+function getTitleListForModal(){
+  a='';
+  for (list of lists){
+    a +='<option class = "modal-title-list" data-id ="'+ list.id + '">'+ list.name +'</option>';
+  }
+  return a;
+}
 
+function changeListInModal(cardId){
+  var modalTitleLists = document.querySelectorAll('.modal-title-list');
+  for (modalTitleList of modalTitleLists){
+    if (modalTitleList.selected){
+     var id = modalTitleList.dataset.id
+      var cartWichChangeList = getCard(cardId);
+      var cardPosition = getCardPositionInList(cardId);
+      console.log(cardPosition);
+      changeListForTask(id, cartWichChangeList,cardPosition);
+    } 
+  }
+}
+
+function getCardPositionInList(cardId){
+   for (list of lists) {
+    for (i in list.tasks) {
+      var card = list.tasks[i];
+      if (card.id === cardId) {
+        return i;
+}
+    }
+   }
+}
+
+function changeListForTask(id, cartWichChangeList,cardPosition){
+      var newListForTask= getList(id);
+     
+      newListForTask.tasks.push(cartWichChangeList);
+      var  listModalId = modalElement.dataset.list;
+      var oldListForTask = getList(listModalId);
+     oldListForTask.tasks.splice(cardPosition, 1);
+  
+  saveBoard();
+}
 
 function addNewCard(listId) {
 
