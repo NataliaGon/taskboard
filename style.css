@@ -144,6 +144,12 @@ background-color: #eee;
    justify-content:center;
    align-items:center;  
 }
+  .delete-list{
+    display: none;
+  }
+  .list:hover .delete-list{
+    display: block;
+  }
 .body-list{
    flex: 1 1 auto;
    background: white;
