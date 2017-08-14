@@ -48,7 +48,7 @@ background-color: #eee;
 	border-radius: 5px;
 	display: inline-flex;
 	flex-direction: column;
-	background: white;
+	background-color: white;
 	max-height: calc(100% - 10px);
 	width: 250px;		
 	border: solid;
@@ -70,8 +70,7 @@ background-color: #eee;
     display: block;
   }
 .body-list{
-   flex: 1 1 auto;
-   background: white;
+   flex: 1 1 auto;  
    display: flex;
    flex-direction: column;
    justify-content: space-between;   
@@ -154,7 +153,9 @@ background-color: #eee;
   height: 90%;
   cursor: pointer;
 }
-
+.dropable{
+  background-color: lightgreen;
+}
 /*
 ******************
 * Members

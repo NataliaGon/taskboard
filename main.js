@@ -77,7 +77,7 @@ function addNewCard(listId) {
         id: makeid(),
         members: []
       }
-
+     
       list.cards.push(card);
       saveBoard();
       break;
@@ -224,3 +224,5 @@ function removeMemberIdFromCards(memberId) {
     }
   }
 }
+
+

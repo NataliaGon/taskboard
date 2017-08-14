@@ -55,34 +55,34 @@ function initApp() {
 
 function setActiveView(selectedView) {
 
-    for (i = 0; i < tabs.length; i++) {
-      var tab = tabs[i];
-      tab.classList.remove('active');
-    }
-
-    for (i = 0; i < views.length; i++) {
-      var view = views[i];
-      view.style.display = 'none';
-    }
-
-    var selectedTabElement = document.querySelector('.' + selectedView + '-tab');
-    selectedTabElement.classList.add('active');
-
-    var selectedViewElement = document.querySelector('#' + selectedView + '-view');
-    selectedViewElement.style.display = 'block';
-
-
-    // Fill view from  data
-    switch (selectedView) {
-      case 'board':
-        createBoard(lists);
-        break;
-      case 'members':
-        createMembers(members);
-        break;
-    }
-
+  for (i = 0; i < tabs.length; i++) {
+    var tab = tabs[i];
+    tab.classList.remove('active');
   }
+
+  for (i = 0; i < views.length; i++) {
+    var view = views[i];
+    view.style.display = 'none';
+  }
+
+  var selectedTabElement = document.querySelector('.' + selectedView + '-tab');
+  selectedTabElement.classList.add('active');
+
+  var selectedViewElement = document.querySelector('#' + selectedView + '-view');
+  selectedViewElement.style.display = 'block';
+
+
+  // Fill view from  data
+  switch (selectedView) {
+    case 'board':
+      createBoard(lists);
+      break;
+    case 'members':
+      createMembers(members);
+      break;
+  }
+
+}
 
 
 ////////////////////////////////////////////////BOARD//////////////////////////////////////////////////////////////////
@@ -94,9 +94,9 @@ function createBoard(lists) {
 
   for (list of lists) {
 
-    listsHtml += '<div class="list" data-id="' + list.id + '">\
+    listsHtml += '<div class="list" data-id="' + list.id + '" ondrop="dropCard(event)" ondragover="allowDropCard(event)"  ondragleave="dragLeaveList(event)">\
             <div class ="head-list">\
-                <span class="list-name" data-id="' + list.id + '">' + list.name + '</span>\
+                <span class="list-name" data-id="' + list.id + '"  >' + list.name + '</span>\
                 <input type="text" class ="list-name-input" value="New list" maxlength="25"  data-id="' + list.id + '"></input>\
                 <button class="delete-list" data-id="' + list.id + '">\
                  <span class="icon-bin"></span> \
@@ -106,7 +106,7 @@ function createBoard(lists) {
 
 
     for (card of list.cards) {
-      listsHtml += '<div class= "body-list-card">\
+      listsHtml += '<div class= "body-list-card"  draggable="true" ondragstart="dragCard(event)" data-card-id="' + card.id + '" data-list-id="' + list.id + '">\
                                    <p>' + card.content + '</p>\
                                    <button class="btn btn-info btn-sm edit-card-button" data-card-id="' + card.id + '" data-list-id="' + list.id + '" >Edit</button>\
                                    <ul class="card-members">';
@@ -168,10 +168,12 @@ function createBoard(lists) {
     addCardBtn.addEventListener('click', function () {
       addNewCard(this.dataset.id);
       createBoard(lists);
-      console.log(addCardButtons);
     });
   }
 
+
+
+  //Event listener for edit card button    
   var editCardButtons = document.querySelectorAll('.edit-card-button');
   for (var i = 0; i < editCardButtons.length; i++) {
     var editCardButton = editCardButtons[i];
@@ -216,18 +218,18 @@ function createBoard(lists) {
 
 }
 
- function openInputTitleList(id) {
+function openInputTitleList(id) {
 
-    var listName = document.querySelector('span[data-id="' + id + '"]');
-    listName.style.display = "none";
+  var listName = document.querySelector('span[data-id="' + id + '"]');
+  listName.style.display = "none";
 
 
-    var listNameInput = document.querySelector('input[data-id="' + id + '"]');
-    listNameInput.style.display = "block";
-    listNameInput.value = listName.textContent;
-    listNameInput.focus();
+  var listNameInput = document.querySelector('input[data-id="' + id + '"]');
+  listNameInput.style.display = "block";
+  listNameInput.value = listName.textContent;
+  listNameInput.focus();
 
-  }
+}
 
 ////////////////////////////////////////////////////MEMBERS///////////////////////////////////////////////////////////
 
@@ -350,17 +352,19 @@ function createMembers(members) {
   function saveMemberNameWasChanged(id) {
     for (i = 0; i < inputMembers.length; i++) {
       var inputMember = inputMembers[i];
-      if (inputMember.dataset.id === id && inputMember.value != '') {
-        var MemberNameWasChanged = inputMember.value;
-      } else {
-        for (member of members) {
-          if (member.id === id) {
-            MemberNameWasChanged = member.name;
+      if (inputMember.dataset.id === id) {
+        if (inputMember.value != '') {
+          var MemberNameWasChanged = inputMember.value;
+        } else {
+          for (member of members) {
+            if (member.id === id) {
+              var MemberNameWasChanged = member.name;
+            }
           }
         }
-
       }
     }
+
     for (i in members) {
       var member = members[i];
       if (member.id === id) {
@@ -375,8 +379,8 @@ function createMembers(members) {
     }
 
   }
- 
- 
+
+
 
   // React on cansel button
 
@@ -448,103 +452,102 @@ buttonAddMember.addEventListener('click', function () {
 
 //////////////////////////////////////////MODAL WINDOW/////////////////////////////////////////////////////////////
 
- function getChekedMembersFromModal() {
-    var membersModal = document.querySelectorAll('.members-modal');
-    var cardId = modalElement.dataset.cardId;
-    var checkedMembers = [];
+function getChekedMembersFromModal() {
+  var membersModal = document.querySelectorAll('.members-modal');
+  var cardId = modalElement.dataset.cardId;
+  var checkedMembers = [];
 
-    for (memModal of membersModal) {
-      if (memModal.checked) {
-        var memberId = memModal.dataset.id;
-        checkedMembers.push(memberId);
-      }
+  for (memModal of membersModal) {
+    if (memModal.checked) {
+      var memberId = memModal.dataset.id;
+      checkedMembers.push(memberId);
     }
-    return checkedMembers;
   }
+  return checkedMembers;
+}
 
 function deleteEditModal() {
-    if (confirm('Delete this card?') === true) {
-      var cardId = modalElement.dataset.cardId;
-
-      deleteCard(cardId);
-      createBoard(lists);
-      closeEditModal();
-    }
-  }
-
-  function saveModalChanges() {
+  if (confirm('Delete this card?') === true) {
     var cardId = modalElement.dataset.cardId;
-    var fromListId = modalElement.dataset.listId;
-    var toListId = listSelectElement.options[listSelectElement.selectedIndex].dataset.id;
 
-    var cardData = {
-      content: document.querySelector('#card-text').value,
-      members: getChekedMembersFromModal()
-    }
-
-    updateCard(cardId, cardData);
-
-    moveCard(fromListId, toListId, cardId);
-
+    deleteCard(cardId);
     createBoard(lists);
     closeEditModal();
+  }
+}
 
+function saveModalChanges() {
+  var cardId = modalElement.dataset.cardId;
+  var fromListId = modalElement.dataset.listId;
+  var toListId = listSelectElement.options[listSelectElement.selectedIndex].dataset.id;
+
+  var cardData = {
+    content: document.querySelector('#card-text').value,
+    members: getChekedMembersFromModal()
   }
 
+  updateCard(cardId, cardData);
 
-  function showEditModal(cardId, listId) {
+  moveCard(fromListId, toListId, cardId);
 
-    //open modal window
-    modalElement.style.display = "block";
+  createBoard(lists);
+  closeEditModal();
 
-    var card = getCard(cardId);
+}
 
-    document.querySelector('#card-text').value = card.content;
 
-    //Set id of card to the save button
+function showEditModal(cardId, listId) {
 
-    modalElement.dataset.cardId = cardId;
-    modalElement.dataset.listId = listId;
+  //open modal window
+  modalElement.style.display = "block";
 
-    listSelectElement.innerHTML = '';
-    selectedList = '';
-    for (list of lists) {
-      if (list.id === listId) {
-        selectedList = 'selected';
-      } else {
-        selectedList = '';
-      }
-      listSelectElement.innerHTML += '<option class = "modal-title-list" ' + selectedList + '  data-id ="' + list.id + '">' + list.name + '</option>';
+  var card = getCard(cardId);
+
+  document.querySelector('#card-text').value = card.content;
+
+  //Set id of card to the save button
+
+  modalElement.dataset.cardId = cardId;
+  modalElement.dataset.listId = listId;
+
+  listSelectElement.innerHTML = '';
+  selectedList = '';
+  for (list of lists) {
+    if (list.id === listId) {
+      selectedList = 'selected';
+    } else {
+      selectedList = '';
+    }
+    listSelectElement.innerHTML += '<option class = "modal-title-list" ' + selectedList + '  data-id ="' + list.id + '">' + list.name + '</option>';
+  }
+
+  document.querySelector('.member-list').innerHTML = getMembersListForModal(card.members);
+
+}
+
+
+function getMembersListForModal(cardMembers) {
+  var listOfMembers = '';
+
+  var checked = '';
+
+  for (member of members) {
+    if (cardMembers.indexOf(member.id) != -1) {
+      checked = 'checked';
+    } else {
+      checked = '';
     }
 
-    document.querySelector('.member-list').innerHTML = getMembersListForModal(card.members);
-
-  }
-
-
-
-  function getMembersListForModal(cardMembers) {
-    var listOfMembers = '';
-
-    var checked = '';
-
-    for (member of members) {
-      if (cardMembers.indexOf(member.id) != -1) {
-        checked = 'checked';
-      } else {
-        checked = '';
-      }
-
-      listOfMembers += '<label for="member-name-' + member.id + '">\
+    listOfMembers += '<label for="member-name-' + member.id + '">\
     <input class="members-modal" '+ checked + ' type="checkbox" value="' + member.name + ' " id="member-name-' + member.id
-        + '" data-id = "' + member.id + '">' + member.name + '</label><br>';
-    }
-    return listOfMembers;
+      + '" data-id = "' + member.id + '">' + member.name + '</label><br>';
   }
+  return listOfMembers;
+}
 
-  function closeEditModal() {
-    modalElement.style.display = "none";
-  }
+function closeEditModal() {
+  modalElement.style.display = "none";
+}
 
 
 
@@ -558,3 +561,40 @@ document.querySelector('.modal-delete-btn ').addEventListener('click', deleteEdi
 
 
 initApp();
+/////////////////////////////////////////DRAG AND DROP///////////////////////////////////////////////////////////
+
+
+
+function allowDropCard(ev) {
+  ev.preventDefault();//Cansel default brauser
+  ev.currentTarget.classList.add('dropable');
+
+}
+
+function dragLeaveList(ev) {
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('dropable');
+}
+//Reaction on mouse moving
+function dragCard(ev) {
+
+  const cardId = ev.currentTarget.dataset.cardId;
+  console.info(cardId);
+  const listId = ev.currentTarget.dataset.listId;
+  const cardData =
+    {
+      cardId: cardId,
+      fromListId: listId
+    };
+  ev.dataTransfer.setData('text', JSON.stringify( cardData));
+}
+//Reaction on object that came
+function dropCard(ev) {
+  ev.preventDefault();//Cansel default brauser
+  const toListId = ev.currentTarget.dataset.id;
+  var data = JSON.parse(ev.dataTransfer.getData("text"));
+      
+ 
+   moveCard(data.fromListId, toListId, data.cardId);
+     createBoard(lists);
+}
