@@ -181,18 +181,18 @@ function deleteCard(id) {
 
 
 
-function addNewMember() {
-  if (newMemberName.value != '') {
+function addNewMember(name) {
+  
     var member = {
       id: makeid(),
-      name: newMemberName.value
+      name: name
     }
     members.push(member);
 
     saveMembers();
 
-    newMemberName.value = '';
-  }
+    
+  
 }
 
 

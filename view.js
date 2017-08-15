@@ -342,41 +342,40 @@ function createMembers(members) {
     saveMemberButton.addEventListener('click', function () {
 
       saveMemberNameWasChanged(this.dataset.id);
-      closeEdit(this.dataset.id);
-      backInputAndSpanPosition(this.dataset.id);
+   
 
 
     });
   }
 
   function saveMemberNameWasChanged(id) {
-    for (i = 0; i < inputMembers.length; i++) {
-      var inputMember = inputMembers[i];
-      if (inputMember.dataset.id === id) {
-        if (inputMember.value != '') {
-          var MemberNameWasChanged = inputMember.value;
-        } else {
-          for (member of members) {
+
+  var inputMember = document.querySelector('.new-member-name[data-id="'+ id +'"]');
+
+        var name = inputMember.value.trim();
+        if (name != '') {
+          
+          for (i in members) {
+            var member = members[i];
             if (member.id === id) {
-              var MemberNameWasChanged = member.name;
+              member.name = name;
+   
+              saveMembers();
+              createMembers(members);
+              
+      //            closeEdit(this.dataset.id);
+      // backInputAndSpanPosition(this.dataset.id);
+
             }
+
           }
+        } else {
+          //TODO :  show allert, pls enter name!
+
         }
-      }
-    }
 
-    for (i in members) {
-      var member = members[i];
-      if (member.id === id) {
-        member.name = MemberNameWasChanged;
-        members.splice(i, 1, member);
-        saveMembers();
-        createMembers(members);
-        break;
 
-      }
 
-    }
 
   }
 
@@ -444,9 +443,15 @@ function createMembers(members) {
 var buttonAddMember = document.querySelector('.btn-add-member');
 
 buttonAddMember.addEventListener('click', function () {
-  addNewMember();
-  createMembers(members);
 
+  var name = newMemberName.value.trim();
+
+  if (name != '') {
+
+    addNewMember(name);
+    createMembers(members);
+    newMemberName.value = '';
+  }
 });
 
 
@@ -586,15 +591,15 @@ function dragCard(ev) {
       cardId: cardId,
       fromListId: listId
     };
-  ev.dataTransfer.setData('text', JSON.stringify( cardData));
+  ev.dataTransfer.setData('text', JSON.stringify(cardData));
 }
 //Reaction on object that came
 function dropCard(ev) {
   ev.preventDefault();//Cansel default brauser
   const toListId = ev.currentTarget.dataset.id;
   var data = JSON.parse(ev.dataTransfer.getData("text"));
-      
- 
-   moveCard(data.fromListId, toListId, data.cardId);
-     createBoard(lists);
+
+
+  moveCard(data.fromListId, toListId, data.cardId);
+  createBoard(lists);
 }
