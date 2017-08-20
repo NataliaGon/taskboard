@@ -65,6 +65,7 @@ background-color: #eee;
 }
   .delete-list{
     display: none;
+    margin-right: 10px;
   }
   .list:hover .delete-list{
     display: block;
@@ -148,9 +149,8 @@ background-color: #eee;
   outline: none;
 }
 .list-name{
-  display: inline-block;  
-  width: 70%;
-  height: 90%;
+  flex: auto;  
+  margin-left: 10px; 
   cursor: pointer;
 }
 .dropable{
