@@ -227,6 +227,7 @@ function openInputTitleList(id) {
   var listNameInput = document.querySelector('input[data-id="' + id + '"]');
   listNameInput.style.display = "block";
   listNameInput.value = listName.textContent;
+  listNameInput.focus();listName.textContent;
   listNameInput.focus();
 
 }
@@ -240,19 +241,18 @@ function createMembers(members) {
   var memberHTML = '';
   for (member of members) {
     memberHTML += '<li class="list-group-item member-in-list" data-id="' + member.id + '">\
-                     <span class="memebr-name" id = "span-mem" data-id="' + member.id + '">' + member.name + '\
+                     <span class="span-memebr-name edit-members-level" id = "span-mem" data-id="' + member.id + '">' + member.name + '\
                      </span>\
-                     <input type="text" class ="new-member-name displayState" value="New member" maxlength="25" data-id="' + member.id + '"></input>\
-                     <div class="member-btns data-id="' + member.id + '">\
-                         <button type="button" class="btn btn-danger edit-member-btn seen delete" id="delete-btn" data-id="' + member.id + '">Delete</button>\
-                         <button type="button" class="btn btn-primary edit-member-btn edit-btn seen"  data-id="' + member.id + '">Edit</button>\
-                         <button type="button" class="btn btn-default member-save-changes-btn cancel-btn" id="cancel" data-id="' + member.id + '">Cancel</button>\
-                         <button type="button" class="btn btn-success member-save-changes-btn save-btn" id="save" data-id="' + member.id + '">Save</button>\
-                     </div>\
+                     <input type="text" class ="new-member-name input-for-member  save-members-level" id = "inputError" value="New member" maxlength="25" data-id="' + member.id + '"></input>\                     <div class="member-btns data-id="' + member.id + '">\
+                         <button type="button" class="btn btn-danger edit-member-btn  delete seen edit-members-level"  data-id="' + member.id + '">Delete</button>\
+                         <button type="button" class="btn btn-primary edit-member-btn edit-btn seen edit-members-level"  data-id="' + member.id + '">Edit</button>\
+                         <button type="button" class="btn btn-default member-save-changes-btn cancel-btn save-members-level"  data-id="' + member.id + '">Cancel</button>\
+                         <button type="button" class="btn btn-success member-save-changes-btn save-btn save-members-level"  data-id="' + member.id + '">Save</button>\
+                         <div class = "pink">   </div>\
+                         </div>\
               </li>';
   }
   listGroup.innerHTML = memberHTML;
-
 
 
   //React on  delete member button
@@ -276,63 +276,52 @@ function createMembers(members) {
   for (var i = 0; i < editMemberButtons.length; i++) {
     var editMemberBtn = editMemberButtons[i];
     editMemberBtn.addEventListener('click', function () {
-      openEdit(this.dataset.id);
-      changeInputAndSpanPosition(this.dataset.id);
-
+        showSaveMemberLevel(this.dataset.id);
     });
   }
 
-  var memberSecondLevelButtons = document.querySelectorAll('.member-save-changes-btn');
-  var memberFirstLevelButtons = document.querySelectorAll('.edit-member-btn');
-
-  // Hide buttons edit and delete. Show buttons cansel and save
-
-  function openEdit(id) {
-
-    for (i = 0; i < memberSecondLevelButtons.length; i++) {
-      var memberSecondLevelButton = memberSecondLevelButtons[i];
-      if (memberSecondLevelButton.dataset.id === id) {
-        memberSecondLevelButton.style.display = "flex";
-
-      }
-    }
-    for (i = 0; i < memberFirstLevelButtons.length; i++) {
-      var memberFirstLevelButton = memberFirstLevelButtons[i];
-      if (memberFirstLevelButton.dataset.id === id) {
-        memberFirstLevelButton.style.display = "none";
-
-      }
+var editMembersLevel = document.querySelectorAll('.edit-members-level');
+var saveMembersLevel = document.querySelectorAll('.save-members-level');
+  
+function showSaveMemberLevel(id){
+  for (var i = 0; i < editMembersLevel.length; i++) {
+    var editMemberLevel = editMembersLevel[i];
+    if (editMemberLevel.dataset.id === id){
+      editMemberLevel.style.display="none";
     }
   }
+  for (var i = 0; i < saveMembersLevel.length; i++) {
+    var saveMemberLevel = saveMembersLevel[i];    
+    if (saveMemberLevel.dataset.id === id){
+      saveMemberLevel.style.display="block";
+      putNameInInput(id);
+    }
+  }
+}
 
+ 
   // Change member
-  var inputMembers = document.querySelectorAll('.displayState');
-  var nameHolders = document.querySelectorAll('.memebr-name');
-  var memberBtns = document.querySelectorAll('.member-btns');
+  var inputMembers = document.querySelectorAll('.input-for-member');
+  var nameHolders = document.querySelectorAll('.span-memebr-name');
+  
 
-  // Change input and spane place
+  // // Change input and spane place
 
-  function changeInputAndSpanPosition(id) {
+ function putNameInInput(id) {
 
     for (i = 0; i < nameHolders.length; i++) {
-      var nameHolder = nameHolders[i];
-      if (nameHolder.dataset.id === id) {
-        nameHolder.style.display = "none";
-        var a = nameHolder.textContent;
-        console.log(a);
+     var nameHolder = nameHolders[i];
+      if (nameHolder.dataset.id === id) { 
+       var a = nameHolder.textContent;  
       }
     }
-    for (i = 0; i < inputMembers.length; i++) {
+   for (i = 0; i < inputMembers.length; i++) {
       var inputMember = inputMembers[i];
-      if (inputMember.dataset.id === id) {
-        inputMember.style.display = "flex";
-        inputMember.value = a;
-
-      }
-    }
-
-
-  }
+     if (inputMember.dataset.id === id) {  
+       inputMember.value = a;
+     }
+   }
+ }
 
   //React on save button 
   var saveMemberButtons = document.querySelectorAll('.save-btn');
@@ -343,8 +332,6 @@ function createMembers(members) {
 
       saveMemberNameWasChanged(this.dataset.id);
    
-
-
     });
   }
 
@@ -362,19 +349,17 @@ function createMembers(members) {
    
               saveMembers();
               createMembers(members);
-              
-      //            closeEdit(this.dataset.id);
-      // backInputAndSpanPosition(this.dataset.id);
-
+            
             }
 
           }
         } else {
           //TODO :  show allert, pls enter name!
 
+          inputMember.classList.add('error');
+
+
         }
-
-
 
 
   }
@@ -390,53 +375,14 @@ function createMembers(members) {
     var canselMemberButton = canselMemberButtons[i];
     canselMemberButton.addEventListener('click', function () {
 
-      closeEdit(this.dataset.id);
-      backInputAndSpanPosition(this.dataset.id);
+      createMembers(members);
 
     });
   }
 
-  function closeEdit(id) {
-
-    for (i = 0; i < memberSecondLevelButtons.length; i++) {
-
-      var memberSecondLevelButton = memberSecondLevelButtons[i];
-      if (memberSecondLevelButton.dataset.id === id) {
-        memberSecondLevelButton.style.display = "none";
-
-      }
-    }
-    for (i = 0; i < memberFirstLevelButtons.length; i++) {
-
-      var memberFirstLevelButton = memberFirstLevelButtons[i];
-      if (memberFirstLevelButton.dataset.id === id) {
-        memberFirstLevelButton.style.display = "flex";
-
-      }
-    }
-
-  }
-
-  function backInputAndSpanPosition(id) {
-    for (i = 0; i < inputMembers.length; i++) {
-      var inputMember = inputMembers[i];
-      if (inputMember.dataset.id === id) {
-        inputMember.style.display = "none";
-      }
-    }
-    for (i = 0; i < nameHolders.length; i++) {
-      var nameHolder = nameHolders[i];
-      if (nameHolder.dataset.id === id) {
-        nameHolder.style.display = "flex";
-
-
-      }
-    }
-
-  }
+  
 
 }
-
 
 
 //React on button add member
