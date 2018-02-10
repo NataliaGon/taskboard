@@ -30,13 +30,7 @@ function loadBoard() {
   }
 }
 
-
-
-
 ///////////////////////////////BOARD///////////////////////////////////////////////////////
-
-
-
 
 
 function moveCard(fromListId, toListId, cardId) {

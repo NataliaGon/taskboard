@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title> Taskboard</title>
-
   <link rel="stylesheet" href="vendor/reset.css">
   <link rel="stylesheet" href="vendor/bootstrap.css">
   <link rel="stylesheet" href="style.css">
@@ -11,18 +10,10 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-default ">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand">
-            <img alt="Brand" src="img/logo.svg">
-          </a>
-      </div>
-      <ul class="nav navbar-nav navbar-left">
-        <li><a class="board-tab">Board</a></li>
-        <li><a class="members-tab">Members</a></li>
-      </ul>
-    </div>
+  <nav>
+    <img alt="Brand" src="img/logo.svg">
+    <a class="board-tab">Board</a>
+    <a class="members-tab">Members</a>
   </nav>
 
   <div id="board-view" class="board view">
@@ -38,64 +29,66 @@
       <input type="text" maxlength="25" placeholder="Add New Member" class="new-member-input" edit></input>
       <button type="button" class="btn btn-primary btn-xs btn-add-member">Add Member</button>
     </div>
-    
+
   </div>
 
 
 
 
-<div class="modal-edit">
+  <div class="modal-edit">
 
 
-  <div class="modal-dialog" id="modal" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Edit Card</h4>
-      </div>
-      <div class="modal-body editMenuInputes">
-        <form class="form-horizontal">
-          <div class="form-group">
-            <label for="card-text" class="col-sm-2 control-label editable-inpte">Card Text</label>
-            <div class="col-sm-10">
-              <textarea type="text" id="card-text" class="form-control"></textarea>
+    <div class="modal-dialog" id="modal" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Edit Card</h4>
+        </div>
+        <div class="modal-body editMenuInputes">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="card-text" class="col-sm-2 control-label editable-inpte">Card Text</label>
+              <div class="col-sm-10">
+                <textarea type="text" id="card-text" class="form-control"></textarea>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="exampleSelect1" class="col-sm-2 control-label">Move To</label>
-            <div class="col-sm-10">
-              <select class="form-control lists-select">
+            <div class="form-group">
+              <label for="exampleSelect1" class="col-sm-2 control-label">Move To</label>
+              <div class="col-sm-10">
+                <select class="form-control lists-select">
                 </select>
+              </div>
             </div>
-          </div>
-          <label for="exampleSelect1" class="col-sm-2 control-label ">Members</label>
-          <div class="col-sm-offset-2 members-input  ">
-            <div class="checkbox form-control member-list">
-              
+            <label for="exampleSelect1" class="col-sm-2 control-label ">Members</label>
+            <div class="col-sm-offset-2 members-input  ">
+              <div class="checkbox form-control member-list">
+
+              </div>
             </div>
-          </div>
-          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-delete-size modal-delete-btn pull-left">Delete Card</button>
-        <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary modal-save">Save changes</button>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-delete-size modal-delete-btn pull-left">Delete Card</button>
+          <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary modal-save">Save changes</button>
+        </div>
       </div>
     </div>
+
   </div>
 
-</div>
+
+
+  <script src="utils.js"></script>
+  <script src="main.js"></script>
+  <script src="view.js"></script>
 
 
 
-  <script src="utils.js"></script> 
- <script src="main.js"></script>
-  <script src="view.js"></script> 
 
-
-
-  <!-- <script src="main1.js"></script> -->
 </body>
 
 </html>

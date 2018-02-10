@@ -9,7 +9,7 @@ var membersTab = document.querySelector('.members-tab');
 var boardView = document.querySelector('#board-view');
 var membersView = document.querySelector('#members-view');
 
-var tabs = document.querySelectorAll('.nav a');
+var tabs = document.querySelectorAll('nav a');
 var views = document.querySelectorAll('.view');
 
 
@@ -25,33 +25,33 @@ var listSelectElement = document.querySelector('.lists-select');
 // Event lisener on menu buttons
 
 boardTab.addEventListener('click', function () {
-
-  insertParam('view', 'board');
+  window.location.hash = '#board'
+  initPageByHash();
 
 });
 
 membersTab.addEventListener('click', function () {
-
-  insertParam('view', 'members');
+ window.location.hash = '#members';
+  initPageByHash();
 
 
 });
 
 //Open view(content) what we need
-function initApp() {
+// function initApp() {
 
-  loadBoard();
-  loadMembers();
+//   loadBoard();
+//   loadMembers();
 
-  var activeView = getParameterByName('view');
+//   var activeView = getParameterByName('view');
 
-  if (activeView == null) {
-    setActiveView('board');
+//   if (activeView == null) {
+//     setActiveView('board');
 
-  } else {
-    setActiveView(activeView);
-  }
-}
+//   } else {
+//     setActiveView(activeView);
+//   }
+// }
 
 function setActiveView(selectedView) {
 
@@ -510,8 +510,8 @@ document.querySelector('.modal-save').addEventListener('click', saveModalChanges
 document.querySelector('.modal-delete-btn ').addEventListener('click', deleteEditModal);
 
 
-
-initApp();
+initPageByHash();
+// initApp();
 /////////////////////////////////////////DRAG AND DROP///////////////////////////////////////////////////////////
 
 
